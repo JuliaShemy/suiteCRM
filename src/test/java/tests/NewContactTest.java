@@ -1,6 +1,7 @@
 package tests;
 
 import dto.Contact;
+import jdk.jfr.Description;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -9,7 +10,9 @@ public class NewContactTest extends BaseTest{
             "test","89324095252","test", "85225212222", "test","Moscow",
             "test","4583265", "Russia","test", "test",
             "Email","Mr.");
-    @Test
+    @Test(description = "Проверка добавдения нового контакта",
+            testName = "Новый контакт")
+    @Description("Проверка добавления нового контакта")
     public void checkAddNewCustomer() throws InterruptedException {
         loginPage.open();
         loginPage.login("will", "will");
