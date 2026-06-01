@@ -14,14 +14,15 @@ import pages.LoginPage;
 import pages.MainPage;
 import pages.NewAccountPage;
 import pages.NewContactPage;
+import step.LoginStep;
 
 public class BaseTest {
 
     protected WebDriver driver;
     protected NewAccountPage newAccountPage;
-    protected LoginPage loginPage;
     protected NewContactPage newContactPade;
     protected MainPage mainPage;
+    protected LoginStep loginStep;
 
     @BeforeMethod(alwaysRun = true, description = "Настройка браузера")
     public void setUp() throws IOException {
@@ -39,9 +40,9 @@ public class BaseTest {
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
 
         newAccountPage = new NewAccountPage(driver);
-        loginPage = new LoginPage(driver);
         newContactPade = new NewContactPage(driver);
         mainPage = new MainPage(driver);
+        loginStep = new LoginStep(driver);
 
     }
 

@@ -1,12 +1,13 @@
 package pages;
 
+import lombok.extern.log4j.Log4j2;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
-
+@Log4j2
 public class MainPage {
     WebDriver driver;
     private final By createMenu =
@@ -23,17 +24,21 @@ public class MainPage {
         this.driver = driver;
     }
 
-    public void goToCreateAccount() {
-        driver.findElement(createMenu).click();
+    public NewAccountPage goToCreateAccount() {
+       driver.findElement(createMenu).click();
 
         new WebDriverWait(driver, Duration.ofSeconds(10))
                 .until(ExpectedConditions.elementToBeClickable(createAccountButton)).click();
+        log.info("Create Account page opened");
+        return new NewAccountPage(driver);
     }
 
-    public void goToCreateContact() {
+    public NewContactPage goToCreateContact() {
         driver.findElement(createMenu).click();
 
         new WebDriverWait(driver, Duration.ofSeconds(10))
                 .until(ExpectedConditions.elementToBeClickable(createContactButton)).click();
+        log.info("Create Contact page opened");
+        return new NewContactPage(driver);
     }
 }
