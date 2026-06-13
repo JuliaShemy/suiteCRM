@@ -1,6 +1,7 @@
 package pages;
 
 import dto.Contact;
+import lombok.extern.log4j.Log4j2;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -8,7 +9,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import wrappers.*;
 
 import java.time.Duration;
-
+@Log4j2
 public class NewContactPage {
     WebDriver driver;
 
@@ -17,6 +18,7 @@ public class NewContactPage {
     }
 
     public void open() {
+        log.info("Opening New Contact page");
         driver.get("https://demo.suiteondemand.com/index.php?module=Contacts&action=EditView&return_module" +
                 "=Contacts&return_action=DetailView");
         new WebDriverWait(driver, Duration.ofSeconds(20))
@@ -26,6 +28,7 @@ public class NewContactPage {
     }
 
     public void addNewContact(Contact contact) {
+        log.info("Adding new contact: '{} {}'", contact.getFirstName(), contact.getLastName());
         new Select(driver, "First Name").select(contact.getSalutation());
         new Input(driver, "First Name").write(contact.getFirstName());
         new Input(driver, "Office Phone").write(contact.getOfficePhone());
@@ -40,12 +43,12 @@ public class NewContactPage {
         new AddressTextarea(driver, "Primary Address", "Address").write(contact.getAddress());
         new AddressTextarea(driver, "Other Address", "Other Address").write(contact.getAddress());
         new AddressInput(driver, "Primary Address", "City").write(contact.getCity());
-        new AddressInput(driver, "Primary Address", "State/Region").write(contact.getState_region());
-        new AddressInput(driver, "Primary Address", "Postal Code").write(contact.getPostal_code());
+        new AddressInput(driver, "Primary Address", "State/Region").write(contact.getStateRegion());
+        new AddressInput(driver, "Primary Address", "Postal Code").write(contact.getPostalCode());
         new AddressInput(driver, "Primary Address", "Country").write(contact.getCountry());
         new AddressInput(driver, "Other Address", "City").write(contact.getCity());
-        new AddressInput(driver, "Other Address", "State/Region").write(contact.getState_region());
-        new AddressInput(driver, "Other Address", "Postal Code").write(contact.getPostal_code());
+        new AddressInput(driver, "Other Address", "State/Region").write(contact.getStateRegion());
+        new AddressInput(driver, "Other Address", "Postal Code").write(contact.getPostalCode());
         new AddressInput(driver, "Other Address", "Country").write(contact.getCountry());
         new Textarea(driver, "Description").write(contact.getDescription());
         new Input(driver, "Assigned to").write(contact.getAssigned_to());
@@ -54,13 +57,16 @@ public class NewContactPage {
     }
 
     public void clickSave() {
+        log.info("Clicking SAVE button");
         driver.findElement((By.xpath("(//*[@id='SAVE'])[2]"))).click();
     }
 
     public String checkNewContact() {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(20));
-        return wait.until(ExpectedConditions.visibilityOfElementLocated(
+        String title = wait.until(ExpectedConditions.visibilityOfElementLocated(
                 By.className("module-title-text"))).getText();
+        log.info("Contact title: '{}'", title);
 
+        return title;
     }
 }

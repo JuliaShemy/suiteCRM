@@ -1,10 +1,11 @@
 package pages;
 
+import lombok.extern.log4j.Log4j2;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
-
+@Log4j2
 public class LoginPage {
 
     WebDriver driver;
@@ -19,12 +20,17 @@ private WebElement loginButton;
         this.driver = driver;
         PageFactory.initElements(driver, this);
     }
-    public void open(){
+    public LoginPage open(){
+        log.info("LoginPage opening");
         driver.get("https://demo.suiteondemand.com/index.php?module=Users&action=Login");
+        return this;
     }
-    public void login(String user, String password){
+
+    public MainPage login(String user, String password){
+        log.info("Log in with credential : '{}', '{}'", user, password);
         loginField.sendKeys(user);
         passwordField.sendKeys(password);
         loginButton.click();
+        return new MainPage(driver);
     }
 }

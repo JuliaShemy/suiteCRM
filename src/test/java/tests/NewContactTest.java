@@ -6,21 +6,36 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 
 public class NewContactTest extends BaseTest{
-    Contact contact = new Contact("test","89120254545","test","nick",
-            "test","89324095252","test", "85225212222", "test","Moscow",
-            "test","4583265", "Russia","test", "test",
-            "Email","Mr.");
+    String uniqueId = String.valueOf(System.currentTimeMillis());
+       Contact contact = Contact.builder()
+               .salutation("Mr.")
+               .firstName("Test_" + uniqueId)
+               .lastName("User")
+               .officePhone("89120254554")
+               .mobile("89990001122")
+               .jobTitle("QA")
+               .accountName("Test Account")
+               .department("QA")
+               .fax("123456789")
+               .city("Moscow")
+               .stateRegion("Test")
+               .postalCode("123456")
+               .country("Russia")
+               .address("Test")
+               .description("Test")
+               .assigned_to("Test")
+               .leadSource("Mail")
+               .build();
     @Test(description = "Проверка добавдения нового контакта",
             testName = "Новый контакт")
     @Description("Проверка добавления нового контакта")
     public void checkAddNewCustomer() throws InterruptedException {
-        loginPage.open();
-        loginPage.login("will", "will");
-        mainPage.goToCreateContact();
-        newContactPade.addNewContact(contact);
+        loginStep.auth("will", "will")
+                .goToCreateContact()
+                .addNewContact(contact);
         newContactPade.clickSave();
 
-        String actualTitle = newAccountPage.checkNewAccountTitle();
+        String actualTitle = newContactPade.checkNewContact();
         String expectedTitle = contact.getSalutation() + " " + contact.getFirstName() + " " + contact.getLastName();
         Assert.assertEquals(actualTitle.toLowerCase(), expectedTitle.toLowerCase());
 
